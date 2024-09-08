@@ -19,6 +19,7 @@ class ReusableMethods{
 
       verifyToastMessage(expectedToastMessage){
 
+          cy.waitTillElementIsVisible(commonPageObject.getToastMessage())
            cy.get(commonPageObject.getToastMessage()).should("contain.text", expectedToastMessage);
            return this;
       }

@@ -70,9 +70,11 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   it('Update Employee Nationality', () => {
     cy.visit(lastUrl)
-    employeeInfo.ExpandNationalityDropdown()
-    .SelectNationality('Bangladeshi')
-    .clickPersonalInfoSaveButton()
+    employeeInfo.expandNationalityDropdown()
+      .selectNationality('Afghan')
+      .clickPersonalInfoSaveButton()
+      reusable.verifyToastMessage('Successfully Updated')
+
 
 
   })
@@ -93,7 +95,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
     cy.visit(lastUrl)
     sideNavbar.clickOnModuleTab('Directory')
       .VerifyExpectedHeaderIsVisible('Directory')
-      directoryPage.enterEmployeeName(firstName)
+    directoryPage.enterEmployeeName(firstName)
       .clickAutoCompleteDropdown()
       .clickSearchButton()
       .verifyEmployeeCardHeaderName(fullName)
@@ -104,7 +106,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
     cy.visit(lastUrl)
     topNavbar.expandUserDropdown()
-    .clickLogoutOption()
+      .clickLogoutOption()
     adminUser = false;
     cy.clearCookies();
     cy.clearLocalStorage();
@@ -118,33 +120,28 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   });
 
-  /*it('Update User Info', () => {
-
-    const myInfo = new MyInfo();
+  it('Update User Info', () => {
     cy.visit(lastUrl);
-    const mainMenu = new MainMenu();
-    mainMenu.getMyInfo().click({ force: true })
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("contain.text", fullName);
-    myInfo.getFemaleGenderRadioButton().scrollIntoView().click({ force: true })
-    myInfo.getPersonalDetailsSaveButton().click({ force: true })
-    myInfo.getBloodGroupDropdown().scrollIntoView().click({ force: true })
-    myInfo.SelectBloodGroup('O+').click({ force: true })
-    myInfo.getCustomDetailsSaveButton().click({ force: true })
-    myInfo.getSuccessToastMessage().should("have.text", "Successfully Saved");
+    sideNavbar.clickOnModuleTab('My Info')
+      .VerifyExpectedHeaderIsVisible(fullName)
+    employeeInfo.clickFemaleGenderRadioButton()
+    employeeInfo.clickPersonalInfoSaveButton()
+    employeeInfo.expandBloodGroupDropdown()
+      .selectBloodGroup('O+')
+    reusable.verifyToastMessage('Successfully Updated')
+    employeeInfo.clickCustomInfoSaveButton()
+    reusable.verifyToastMessage('Successfully Saved')
 
   });
 
   it('Logout as New Employee', () => {
     cy.visit(lastUrl)
-    const userMenu = new UserMenu()
-    userMenu.getUserMenu().click({ force: true })
-    userMenu.getLogoutOption().click({ force: true })
-    adminUser = false;
-    //clearing admin session
+    topNavbar.expandUserDropdown()
+      .clickLogoutOption()
+    adminUser = true;
     cy.clearCookies();
     cy.clearLocalStorage();
-  })*/
+  })
 
 
 
@@ -156,6 +153,6 @@ describe('OrangeHRM End to End Testing with POM', () => {
   after(() => {
 
     // clearing employeeData object after all tests are completed
-    cy.writeFile(`cypress/fixtures/${employeeDataFile}`, {});
+    //cy.writeFile(`cypress/fixtures/${employeeDataFile}`, {});
   });
 });
