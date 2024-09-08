@@ -6,6 +6,7 @@ import UserMenu from '../pageObjects/userMenu';
 import MyInfo from '../pageObjects/myInfoPage';
 import ReusableMethods from '../support/PageObjects/ReusableMethods';
 import LoginPage from '../support/PageObjects/LoginPage';
+import SideNavbar from '../support/PageObjects/SideNavbar';
 describe('OrangeHRM End to End Testing', () => {
 
   let adminCredentials;
@@ -41,12 +42,12 @@ describe('OrangeHRM End to End Testing', () => {
 
 
   it('Creating a New Employee', () => {
-    const mainMenu = new MainMenu();
+    const sideNavbar = new SideNavbar();
     const addEmployee = new AddEmployee();
 
     cy.visit('/');
     reusable.VerifyExpectedHeaderIsVisible("Dashboard")
-    mainMenu.getPIM().click();
+    sideNavbar.clickOnModuleTab('PIM')
     addEmployee.getAddButton().click();
     addEmployee.getFirstName().type(firstName);
     addEmployee.getLastName().type(lastName);
