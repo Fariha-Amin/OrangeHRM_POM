@@ -9,6 +9,7 @@ import SideNavbar from '../support/PageObjects/SideNavbar';
 import PIMPage from '../support/PageObjects/PIMPage';
 import EmployeeInfoPage from '../support/PageObjects/EmployeeInfoPage';
 import DirectoryPage from '../support/PageObjects/DirectoryPage';
+import TopNavbar from '../support/PageObjects/TopNavbar';
 describe('OrangeHRM End to End Testing with POM', () => {
 
   let adminCredentials;
@@ -21,6 +22,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
   const pimPage = new PIMPage();
   const employeeInfo = new EmployeeInfoPage();
   const directoryPage = new DirectoryPage();
+  const topNavbar = new TopNavbar();
 
 
   const firstName = faker.name.firstName();
@@ -98,12 +100,11 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   })
 
-  /*it('Logout', () => {
+  it('Logout', () => {
 
     cy.visit(lastUrl)
-    const userMenu = new UserMenu()
-    userMenu.getUserMenu().click({ force: true })
-    userMenu.getLogoutOption().click({ force: true })
+    topNavbar.expandUserDropdown()
+    .clickLogoutOption()
     adminUser = false;
     cy.clearCookies();
     cy.clearLocalStorage();
@@ -111,14 +112,13 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   it('Login with New Employee Credentials', () => {
     cy.visit('/');
-    const userMenu = new UserMenu()
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("have.text", "Dashboard");
-    userMenu.getUserNameText().should('contain.text', fullName)
+    //logged in as the new employee from beforeEach hook as adminUser is set to false now
+    reusable.VerifyExpectedHeaderIsVisible('Dashboard')
+    topNavbar.matchUserNameText(fullName)
 
   });
 
-  it('Update User Info', () => {
+  /*it('Update User Info', () => {
 
     const myInfo = new MyInfo();
     cy.visit(lastUrl);
