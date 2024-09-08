@@ -27,7 +27,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // require('cypress-mochawesome-reporter/plugin')(on);
       config.specPattern = [
-        'cypress/e2e/orangehrm_e2e.cy.js', 
+        'cypress/e2e/orangehrm_e2e_POM.cy.js', 
       ]
       return config;
     },

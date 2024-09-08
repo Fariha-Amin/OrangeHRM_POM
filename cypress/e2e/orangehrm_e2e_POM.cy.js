@@ -7,7 +7,7 @@ import MyInfo from '../pageObjects/myInfoPage';
 import ReusableMethods from '../support/PageObjects/ReusableMethods';
 import SideNavbar from '../support/PageObjects/SideNavbar';
 import PIMPage from '../support/PageObjects/PIMPage';
-describe('OrangeHRM End to End Testing', () => {
+describe('OrangeHRM End to End Testing with POM', () => {
 
   let adminCredentials;
   let lastUrl;
@@ -47,6 +47,7 @@ describe('OrangeHRM End to End Testing', () => {
     cy.visit('/');
     reusable.VerifyExpectedHeaderIsVisible("Dashboard")
     sideNavbar.clickOnModuleTab('PIM')
+      .VerifyExpectedHeaderIsVisible('PIM')
     pimPage.clickAddEmployeeButton()
       .enterFirstName(firstName)
       .enterLastName(lastName)
@@ -61,22 +62,18 @@ describe('OrangeHRM End to End Testing', () => {
 
   });
 
-  /*it('Search by Employee ID', () => {
-    const mainMenu = new MainMenu();
-    const addEmployee = new AddEmployee();
+  it('Search by Employee ID', () => {
     cy.visit(lastUrl)
-    mainMenu.getPIM().click()
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("contain.text", 'PIM');
-
+    sideNavbar.clickOnModuleTab('PIM')
+      .VerifyExpectedHeaderIsVisible('PIM')
     cy.fixture(employeeDataFile).then((employee) => {
-      addEmployee.getEmployeeId().type(employee.employeeId)
-      addEmployee.getSearchEmployeeButton().click({ force: true })
-      addEmployee.getTableCell().contains(employee.employeeId).should('be.visible')
+      pimPage.enterEmployeeID(employee.employeeId)
+        .clickSearchEmployeeButton()
+        .verifyEmployeeDataIsVisible(employee.employeeId)
     })
   })
 
-  it('Search in Directory by Employee Name', () => {
+  /*it('Search in Directory by Employee Name', () => {
     cy.visit(lastUrl)
     const mainMenu = new MainMenu();
     const directory = new Directory();

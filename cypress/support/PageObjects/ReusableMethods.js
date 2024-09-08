@@ -13,7 +13,8 @@ class ReusableMethods{
       }
       VerifyExpectedHeaderIsVisible(expectedText){
         cy.waitTillElementIsVisible('h6')
-        cy.get('h6').should("have.text", expectedText);
+        cy.get('h6').should("contain.text", expectedText);
+        return this;
       }
 
       verifyToastMessage(expectedToastMessage){
