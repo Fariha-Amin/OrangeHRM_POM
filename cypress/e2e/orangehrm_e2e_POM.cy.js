@@ -7,6 +7,7 @@ import MyInfo from '../pageObjects/myInfoPage';
 import ReusableMethods from '../support/PageObjects/ReusableMethods';
 import SideNavbar from '../support/PageObjects/SideNavbar';
 import PIMPage from '../support/PageObjects/PIMPage';
+import EmployeeInfoPage from '../support/PageObjects/EmployeeInfoPage';
 describe('OrangeHRM End to End Testing with POM', () => {
 
   let adminCredentials;
@@ -17,6 +18,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
   const reusable = new ReusableMethods();
   const sideNavbar = new SideNavbar();
   const pimPage = new PIMPage();
+  const employeeInfo = new EmployeeInfoPage();
 
 
   const firstName = faker.name.firstName();
@@ -62,6 +64,15 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   });
 
+  it('Update Employee Nationality', () => {
+    cy.visit(lastUrl)
+    employeeInfo.ExpandNationalityDropdown()
+    .SelectNationality('Bangladeshi')
+    .clickPersonalInfoSaveButton()
+
+
+  })
+
   it('Search by Employee ID', () => {
     cy.visit(lastUrl)
     sideNavbar.clickOnModuleTab('PIM')
@@ -70,10 +81,11 @@ describe('OrangeHRM End to End Testing with POM', () => {
       pimPage.enterEmployeeID(employee.employeeId)
         .clickSearchEmployeeButton()
         .verifyEmployeeDataIsVisible(employee.employeeId)
+
     })
   })
 
-  /*it('Search in Directory by Employee Name', () => {
+  it('Search in Directory by Employee Name', () => {
     cy.visit(lastUrl)
     const mainMenu = new MainMenu();
     const directory = new Directory();
@@ -97,7 +109,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   })
 
-  it('Logout', () => {
+  /*it('Logout', () => {
 
     cy.visit(lastUrl)
     const userMenu = new UserMenu()
