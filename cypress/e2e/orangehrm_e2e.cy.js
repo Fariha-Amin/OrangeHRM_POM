@@ -5,8 +5,8 @@ import Directory from '../pageObjects/directory';
 import UserMenu from '../pageObjects/userMenu';
 import MyInfo from '../pageObjects/myInfoPage';
 import ReusableMethods from '../support/PageObjects/ReusableMethods';
-import LoginPage from '../support/PageObjects/LoginPage';
 import SideNavbar from '../support/PageObjects/SideNavbar';
+import PIMPage from '../support/PageObjects/PIMPage';
 describe('OrangeHRM End to End Testing', () => {
 
   let adminCredentials;
@@ -15,7 +15,8 @@ describe('OrangeHRM End to End Testing', () => {
   let newEmployeeCredentials;
   const employeeDataFile = "employeeData.json";
   const reusable = new ReusableMethods();
-  const loginPage = new LoginPage();
+  const sideNavbar = new SideNavbar();
+  const pimPage = new PIMPage();
 
 
   const firstName = faker.name.firstName();
@@ -42,31 +43,21 @@ describe('OrangeHRM End to End Testing', () => {
 
 
   it('Creating a New Employee', () => {
-    const sideNavbar = new SideNavbar();
-    const addEmployee = new AddEmployee();
 
     cy.visit('/');
     reusable.VerifyExpectedHeaderIsVisible("Dashboard")
     sideNavbar.clickOnModuleTab('PIM')
-    addEmployee.getAddButton().click();
-    addEmployee.getFirstName().type(firstName);
-    addEmployee.getLastName().type(lastName);
-    addEmployee.getLoginDetailsToggleButton().click({ force: true });
-    addEmployee.getUsername().type(username);
-    addEmployee.getPassword().type(password);
-    addEmployee.getConfirmPassword().type(password);
-    addEmployee.getEmployeeId().invoke('val').then(employeeId => {
-      cy.writeFile(`cypress/fixtures/${employeeDataFile}`, {
-        username,
-        password,
-        employeeId
-      });
-
-    })
-    addEmployee.getSaveButton().click({ force: true });
-    addEmployee.getToastMessage().should("have.text", "Successfully Saved");
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("contain.text", fullName);
+    pimPage.clickAddEmployeeButton()
+      .enterFirstName(firstName)
+      .enterLastName(lastName)
+      .clickLoginDetailsToggleButton()
+      .enterUserName(username)
+      .enterPassword(password)
+      .enterConfirmPassword(password)
+      .saveEmployeeInfo(employeeDataFile, username, password)
+      .clickSaveButton()
+      .verifyToastMessage("Successfully Saved")
+      .VerifyExpectedHeaderIsVisible(fullName)
 
   });
 
@@ -107,7 +98,7 @@ describe('OrangeHRM End to End Testing', () => {
     })
 
 
-  })*/
+  })
 
   it('Logout', () => {
 
@@ -129,7 +120,7 @@ describe('OrangeHRM End to End Testing', () => {
 
   });
 
-  /*it('Update User Info', () => {
+  it('Update User Info', () => {
 
     const myInfo = new MyInfo();
     cy.visit(lastUrl);
@@ -144,7 +135,7 @@ describe('OrangeHRM End to End Testing', () => {
     myInfo.getCustomDetailsSaveButton().click({ force: true })
     myInfo.getSuccessToastMessage().should("have.text", "Successfully Saved");
 
-  });*/
+  });
 
   it('Logout as New Employee', () => {
     cy.visit(lastUrl)
@@ -155,7 +146,7 @@ describe('OrangeHRM End to End Testing', () => {
     //clearing admin session
     cy.clearCookies();
     cy.clearLocalStorage();
-  })
+  })*/
 
 
 

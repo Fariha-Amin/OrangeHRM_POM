@@ -1,4 +1,6 @@
 const { faker } = require('@faker-js/faker');
+import CommonPageObjects from '../Wiring/CommonPageObjects';
+const commonPageObject = new CommonPageObjects();
 class ReusableMethods{
 
     generatePassword() {
@@ -12,6 +14,12 @@ class ReusableMethods{
       VerifyExpectedHeaderIsVisible(expectedText){
         cy.waitTillElementIsVisible('h6')
         cy.get('h6').should("have.text", expectedText);
+      }
+
+      verifyToastMessage(expectedToastMessage){
+
+           cy.get(commonPageObject.getToastMessage()).should("contain.text", expectedToastMessage);
+           return this;
       }
 }
 
