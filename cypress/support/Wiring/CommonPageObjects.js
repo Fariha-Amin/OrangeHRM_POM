@@ -1,5 +1,6 @@
 const toastMessage = '.oxd-text--toast-message'
 const submitButton = "button[type='submit']"
+const searchButton = "button[type='submit']:contains('Search')"
 class CommonPageObjects {
 
     getToastMessage() {
@@ -8,6 +9,9 @@ class CommonPageObjects {
 
     getSubmitButton() {
         return submitButton;
+    }
+    getSearchButton() {
+        return searchButton;
     }
 }
 

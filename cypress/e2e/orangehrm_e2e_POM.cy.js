@@ -8,6 +8,7 @@ import ReusableMethods from '../support/PageObjects/ReusableMethods';
 import SideNavbar from '../support/PageObjects/SideNavbar';
 import PIMPage from '../support/PageObjects/PIMPage';
 import EmployeeInfoPage from '../support/PageObjects/EmployeeInfoPage';
+import DirectoryPage from '../support/PageObjects/DirectoryPage';
 describe('OrangeHRM End to End Testing with POM', () => {
 
   let adminCredentials;
@@ -19,6 +20,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
   const sideNavbar = new SideNavbar();
   const pimPage = new PIMPage();
   const employeeInfo = new EmployeeInfoPage();
+  const directoryPage = new DirectoryPage();
 
 
   const firstName = faker.name.firstName();
@@ -87,25 +89,12 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   it('Search in Directory by Employee Name', () => {
     cy.visit(lastUrl)
-    const mainMenu = new MainMenu();
-    const directory = new Directory();
-    mainMenu.getDirectory().click()
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("contain.text", 'Directory');
-
-    cy.fixture(employeeDataFile).then((employee) => {
-      directory.getEmployeeNameField().type(firstName)
-      directory.getAutoCompleteDropdown().click()
-      directory.getSearchButton().click()
-      directory.getEmployeeCardHeader()
-        .invoke('text')
-        .then((text) => {
-          const normalizedText = text.replace(/\s+/g, ' ').trim();
-          expect(normalizedText).to.eq(fullName);
-        });
-
-    })
-
+    sideNavbar.clickOnModuleTab('Directory')
+      .VerifyExpectedHeaderIsVisible('Directory')
+      directoryPage.enterEmployeeName(firstName)
+      .clickAutoCompleteDropdown()
+      .clickSearchButton()
+      .verifyEmployeeCardHeaderName(fullName)
 
   })
 
