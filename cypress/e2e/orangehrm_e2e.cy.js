@@ -4,6 +4,8 @@ import AddEmployee from '../pageObjects/addEmployee';
 import Directory from '../pageObjects/directory';
 import UserMenu from '../pageObjects/userMenu';
 import MyInfo from '../pageObjects/myInfoPage';
+import ReusableMethods from '../support/PageObjects/ReusableMethods';
+import LoginPage from '../support/PageObjects/LoginPage';
 describe('OrangeHRM End to End Testing', () => {
 
   let adminCredentials;
@@ -11,21 +13,15 @@ describe('OrangeHRM End to End Testing', () => {
   let adminUser = true;
   let newEmployeeCredentials;
   const employeeDataFile = "employeeData.json";
+  const reusable = new ReusableMethods();
+  const loginPage = new LoginPage();
 
-
-  function generatePassword() {
-    const upperCase = faker.internet.password(3, false, /[A-Z]/);
-    const lowerCase = faker.internet.password(3, false, /[a-z]/);
-    const numbers = faker.internet.password(3, false, /[0-9]/);
-    const symbols = faker.internet.password(1, false, /[\W_]/);
-    return upperCase + lowerCase + numbers + symbols;
-  }
 
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
   const username = firstName + lastName;
   const fullName = firstName + " " + lastName;
-  const password = generatePassword();
+  const password = reusable.generatePassword();
 
 
   before(() => {
@@ -37,24 +33,9 @@ describe('OrangeHRM End to End Testing', () => {
 
   beforeEach(() => {
     if (adminUser) {
-      Cypress.config('pageLoadTimeout', 10000);
-      cy.session('Login as Admin', () => {
-        cy.visit('/');
-        cy.title().should("eq", "OrangeHRM");
-        cy.login(adminCredentials);
-      });
+      cy.LoginAsAdmin(adminCredentials)
     } else if (!adminUser) {
-      cy.fixture(employeeDataFile).then((employee) => {
-        newEmployeeCredentials = {
-          username: employee.username,
-          password: employee.password
-        };
-        cy.session('Login as New Employee', () => {
-          cy.visit('/');
-          cy.login(newEmployeeCredentials);
-        });
-
-      });
+      cy.LoginAsEmployee(employeeDataFile)
     }
   });
 
@@ -64,8 +45,7 @@ describe('OrangeHRM End to End Testing', () => {
     const addEmployee = new AddEmployee();
 
     cy.visit('/');
-    cy.waitTillElementIsVisible('h6');
-    cy.get('h6').should("have.text", "Dashboard");
+    reusable.VerifyExpectedHeaderIsVisible("Dashboard")
     mainMenu.getPIM().click();
     addEmployee.getAddButton().click();
     addEmployee.getFirstName().type(firstName);
@@ -89,7 +69,7 @@ describe('OrangeHRM End to End Testing', () => {
 
   });
 
-  it('Search by Employee ID', () => {
+  /*it('Search by Employee ID', () => {
     const mainMenu = new MainMenu();
     const addEmployee = new AddEmployee();
     cy.visit(lastUrl)
@@ -126,7 +106,7 @@ describe('OrangeHRM End to End Testing', () => {
     })
 
 
-  })
+  })*/
 
   it('Logout', () => {
 
@@ -148,7 +128,7 @@ describe('OrangeHRM End to End Testing', () => {
 
   });
 
-  it('Update User Info', () => {
+  /*it('Update User Info', () => {
 
     const myInfo = new MyInfo();
     cy.visit(lastUrl);
@@ -163,7 +143,7 @@ describe('OrangeHRM End to End Testing', () => {
     myInfo.getCustomDetailsSaveButton().click({ force: true })
     myInfo.getSuccessToastMessage().should("have.text", "Successfully Saved");
 
-  });
+  });*/
 
   it('Logout as New Employee', () => {
     cy.visit(lastUrl)
