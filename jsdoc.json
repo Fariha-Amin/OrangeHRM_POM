@@ -1,0 +1,10 @@
+{
+    "source": {
+      "include": ["cypress/support", "cypress/e2e"],  
+      "exclude": ["node_modules", "cypress/fixtures"]       
+    },
+    "opts": {
+      "destination": "./docs"  
+    }
+  }
+  
