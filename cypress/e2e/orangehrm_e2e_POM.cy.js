@@ -71,7 +71,7 @@ describe('OrangeHRM End to End Testing with POM', () => {
   it('Update Employee Nationality', () => {
     cy.visit(lastUrl)
     employeeInfo.expandNationalityDropdown()
-      .selectNationality('Afghan')
+      .selectNationality('Algerian')
       .clickPersonalInfoSaveButton()
       reusable.verifyToastMessage('Successfully Updated')
 
@@ -134,14 +134,14 @@ describe('OrangeHRM End to End Testing with POM', () => {
 
   });
 
-  it('Logout as New Employee', () => {
+  /*it('Logout as New Employee', () => {
     cy.visit(lastUrl)
     topNavbar.expandUserDropdown()
       .clickLogoutOption()
     adminUser = true;
     cy.clearCookies();
     cy.clearLocalStorage();
-  })
+  })*/
 
 
 

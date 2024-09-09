@@ -17,7 +17,8 @@ class EmployeeInfoPage {
     }
 
     clickPersonalInfoSaveButton() {
-        cy.get(employeeInfoObject.getPersonalDetailsSection()).parent('div').find(commonPageObject.getSubmitButton()).scrollIntoView().click({force:true})
+        //cy.get(employeeInfoObject.getPersonalDetailsSection()).parent('div').find(commonPageObject.getSubmitButton()).scrollIntoView().click({force:true})
+        cy.get(commonPageObject.getSubmitButton()).eq(0).click();
         return this
     }
 
