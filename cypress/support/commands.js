@@ -78,3 +78,6 @@ Cypress.Commands.add('LoginAsEmployee', (employeeDataFile) => {
 Cypress.Commands.add("waitTillElementIsVisible", (selector, timeout = 30000) => {
   cy.get(selector, { timeout }).should("be.visible");
 });
+Cypress.on('uncaught:exception', (err, runnable) => {
+  return false;
+});

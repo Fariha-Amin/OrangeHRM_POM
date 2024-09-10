@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "recordDashboard": "npx cypress run --record --key 556dd6ee-7d40-4048-b558-99a1ef7a6c09"
+    "test": "npx cypress run",
+    "recordDashboard": "npx cypress run --record --headed chrome --key 12c49180-5f83-4cb8-8929-f99a3894a85a"
   },
   "keywords": [],
   "author": "",
