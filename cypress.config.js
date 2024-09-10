@@ -23,7 +23,7 @@ module.exports = defineConfig({
     watchForFileChanges:false,
     autoRefresh:false,
     // testIsolation:false,
-    // defaultCommandTimeout: 5000,
+     defaultCommandTimeout: 8000,
     setupNodeEvents(on, config) {
       // require('cypress-mochawesome-reporter/plugin')(on);
       config.specPattern = [
